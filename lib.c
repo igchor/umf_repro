@@ -39,14 +39,22 @@ void* alloc(void) {
         return NULL;
     }
 
+    // setup params
+    umf_level_zero_memory_provider_params_handle_t params = NULL;
+    umf_result_t umf_ret = umfLevelZeroMemoryProviderParamsCreate(&params);
+    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsCreate\n");
 
-    level_zero_memory_provider_params_t params = {};
-    params.level_zero_context_handle = context;
-    params.level_zero_device_handle = NULL;
-    params.memory_type = UMF_MEMORY_TYPE_HOST;
+    umf_ret = umfLevelZeroMemoryProviderParamsSetContext(params, context);
+    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetContext\n");
+
+    umf_ret = umfLevelZeroMemoryProviderParamsSetDevice(params, NULL);
+    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetDevice\n");
+
+    umf_ret = umfLevelZeroMemoryProviderParamsSetMemoryType(params, UMF_MEMORY_TYPE_HOST);
+    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetMemoryType\n");
 
     umf_memory_provider_handle_t hProvider;
-    umf_result_t umf_ret = umfMemoryProviderCreate(umfLevelZeroMemoryProviderOps(), &params, &hProvider);
+    umf_ret = umfMemoryProviderCreate(umfLevelZeroMemoryProviderOps(), params, &hProvider);
     if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfMemoryProviderCreate\n");
 
     umf_memory_pool_handle_t hPool;
