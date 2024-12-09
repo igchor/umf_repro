@@ -14,7 +14,7 @@
 #include "umf/pools/pool_proxy.h"
 #include "umf/providers/provider_level_zero.h"
 
-#include "utils_level_zero.h"
+#include "examples_level_zero_helpers.h"
 
 void* alloc(void) {
     uint32_t driver_idx = 0;
@@ -42,24 +42,42 @@ void* alloc(void) {
     // setup params
     umf_level_zero_memory_provider_params_handle_t params = NULL;
     umf_result_t umf_ret = umfLevelZeroMemoryProviderParamsCreate(&params);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsCreate\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsCreate\n");
+        return NULL;
+    }
 
     umf_ret = umfLevelZeroMemoryProviderParamsSetContext(params, context);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetContext\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetContext\n");
+        return NULL;
+    }
 
     umf_ret = umfLevelZeroMemoryProviderParamsSetDevice(params, NULL);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetDevice\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetDevice\n");
+        return NULL;
+    }
 
     umf_ret = umfLevelZeroMemoryProviderParamsSetMemoryType(params, UMF_MEMORY_TYPE_HOST);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetMemoryType\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfLevelZeroMemoryProviderParamsSetMemoryType\n");
+        return NULL;
+    }
 
     umf_memory_provider_handle_t hProvider;
     umf_ret = umfMemoryProviderCreate(umfLevelZeroMemoryProviderOps(), params, &hProvider);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfMemoryProviderCreate\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfMemoryProviderCreate\n");
+        return NULL;
+    }
 
     umf_memory_pool_handle_t hPool;
     umf_ret = umfPoolCreate(umfProxyPoolOps(), hProvider, NULL, 0, &hPool);
-    if (umf_ret != UMF_RESULT_SUCCESS) fprintf(stderr, "ERROR: umfPoolCreate\n");
+    if (umf_ret != UMF_RESULT_SUCCESS) {
+        fprintf(stderr, "ERROR: umfPoolCreate\n");
+        return NULL;
+    }
 
     return umfPoolMalloc(hPool, 1024);
 }
