@@ -5,6 +5,7 @@
 void* (*alloc)(void);
 
 int main() {
+    // Work fine if RTLD_GLOBAL is used
     void *handle = dlopen("libipc.so", RTLD_LAZY | RTLD_LOCAL);
     if (!handle) { 
 	    printf("dlopen failed\n");
