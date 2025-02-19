@@ -5,7 +5,7 @@ project(test_l0)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-set(UR_LEVEL_ZERO_LOADER_TAG bebac0da1432b9d5bf36eb400ac1b0b30e682bb8)
+set(UR_LEVEL_ZERO_LOADER_TAG 9bc87d17f2f38f93a15930464f9cd58a991a4ade)
 set(UR_LEVEL_ZERO_LOADER_REPO "https://github.com/nrspruit/level-zero.git")
 
 set(BUILD_STATIC ON)
